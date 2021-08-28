@@ -76,6 +76,7 @@ For convenience, `data.csv` contains all data (both the train and the test data)
 - We use the Sequential class to create a multilayer neural network. Here we use 2 hidden layers with 16 neurons (found by trial and error) and one output layer. 
 - We use elu activation functions that work better with our model (they are smoother than relu) and we used a linear activation function for our output layer.
 - We then set the optimizer to be Adam which is an algorithm that is stochastic gradient descent method (which is typical for these types of problems).
+- We then set our loss to be computed with the mean_squared_error (typical for regression problems). 
 - Finally we fit the model and obtain our predictions on the relation between energy and enthalpy that is plotted below and in 'fit.png'.
 ![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/fit.png)
 
