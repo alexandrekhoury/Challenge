@@ -11,7 +11,8 @@ Describe (with pseudocode or real code) how to find an element by value in an un
 There are many ways to go about this question. Here is code in python for one of the possible ways: 
 1. Find it using the basic methods: 
 ex code: 
-<<<
+
+"""
 List = [1,2,3,4] 
 def find(x,List):
     count=0
@@ -20,7 +21,8 @@ def find(x,List):
             return count
         count+=1
     return print("The value was not found.")
-    >>>
+"""
+
 Here x should be an integer and List should be a list of integers.
 
 #### Q2. Optimised find function for sorted list
@@ -30,7 +32,8 @@ How would optimise the "find" function of Q1 if the input list is a sorted list?
 
 For a sorted array, one can use the Binary search algorithm which can be coded in python as follows: 
 ex code: 
-<<<
+
+"""
 import math
 List = [1,28,34,48,72,102] 
 def find_sorted(x,List):
@@ -45,7 +48,8 @@ def find_sorted(x,List):
         else:
             return i       
     return print("The value was not found.")
->>>
+"""
+
 Here we have an implementation of the Binary search algorithm that takes the middle value of a list and sees if our target value is greater of less than our middle value and repeatedly iterates until the value index is found.
 
 #### Q3. Machine learning for energy consumption
