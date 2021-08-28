@@ -93,8 +93,8 @@ There are a couple ways to approach this problem. We can train our data using un
 
 This allows us to set boundaries as to what is an acceptable energy level range for a given enthalpy value. Using our training (good data) we know that anything above or below that range is considered as unacceptable data. If we had training data that contained some bad data as well, we could have used a machine learning algorithm to train the data to recognize what is good and bad and set its own boundaries. (Classification problem).
 
-- We now take our prediction model from Part 1 and apply it on the enthalpy test_data given by 'test_data.csv'.
-- We then proceed to find all the dates when the energy values were within the defined range as shown in figure 'test_data.png' and below. The range was defined from the gaussian noise generated with standard deviation that we retrieved in our training set. 
+- We now take our prediction model from Part 1 and apply it on the test_data given by 'test_data.csv' to recover new predictions for the given enthalpy.
+- We then proceed to find all the dates when the energy values were within the defined range as shown in figure 'test_data.png' and below. The range was defined from the gaussian noise generated with standard deviation that we retrieved in our training set. All energy levels within the min and the max are deemed as acceptable.
 
 ![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/test_data.png)
 
