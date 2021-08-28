@@ -144,6 +144,14 @@ if __name__=='__main__':
     good_dates=test_date[good]
     bad_dates=test_date[np.invert(good)]
     
+    #plotting data from within range only
+    plt.figure()
+    plt.plot(test_enthalpy,test_predictions+noise_max,label='Max prediction range')
+    plt.plot(test_enthalpy,test_predictions+noise_min,label='Min prediction range')
+    plt.plot(test_enthalpy[good],test_energy[good],'o',label='raw data')
+    plt.legend()
+    plt.savefig('good.png')
+    
     
     #RESCALING 
     predictions_scaled=predictions*energy_scale.reshape(-1,1)
