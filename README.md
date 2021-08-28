@@ -99,8 +99,10 @@ This allows us to set boundaries as to what is an acceptable energy level range 
 
 Figure 'good.png' shows the data that is between both the min and max of our fit and is shown below.
 
+![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/good.png)
 
 
+#### On the plots we see that the energy and enthalpy values were renormalized. This was done in order to facilitate the machine learning algorithm. We can easily convert them back to their initial values since we kept track of the scaling transformation that was applied.
 
 The code for this procedure is found in 'Q3.py' and below. 
 
