@@ -1,1 +1,71 @@
 # Challenge
+
+##Questions: 
+
+#### Q1. Regular find function for list
+Describe (with pseudocode or real code) how to find an element by value in an unsorted list (i.e. define the "find" function for a list, with a list and a value as inputs). The function should return the index of the element found. What should you return if the element is not in the list?
+> For simplicity, you can assume a list of integers.
+
+##Attempt
+There are many ways to go about this question. Here is code in python for one of the possible ways: 
+1. Find it using the basic methods: 
+ex code: 
+<<<
+List = [1,2,3,4] 
+def find(x,List):
+    count=0
+    for i in List :
+        if x==i: 
+            return count
+        count+=1
+    return print("The value was not found.")
+    >>>
+Here x should be an integer and List should be a list of integers.
+
+#### Q2. Optimised find function for sorted list
+How would optimise the "find" function of Q1 if the input list is a sorted list?
+
+##Attempt
+For a sorted array, one can use the Binary search algorithm which can be coded in python as follows: 
+ex code: 
+<<<
+import math
+List = [1,28,34,48,72,102] 
+def find_sorted(x,List):
+    L=0
+    R=len(List)-1	
+    while (L<=R):
+        i= math.floor((L+R)/2)
+        if List[i]<x: 
+            L+=1
+        elif List[i]>x:
+            R=i-1
+        else:
+            return i       
+    return print("The value was not found.")
+>>>
+Here we have an implementation of the Binary search algorithm that takes the middle value of a list and sees if our target value is greater of less than our middle value and repeatedly iterates until the value index is found.
+
+#### Q3. Machine learning for energy consumption
+The `train_data.csv` contains energy consumption data of some store for some given days in the past where the store was working at an acceptable level of energy consumption (every day in the train_data can be considered good data, i.e. the store was working at an acceptable level).
+
+The date, energy and enthalpy variables are given. A relationship between enthalpy (average daily outside air enthalpy) and energy (the total store energy consumption) exists (enthalpy is the independent variable, and energy is the dependent variable).
+
+Create a machine learning model that would determine days where the store is not working optimally. Use the model to determine which days in the `test_data.csv` were at an acceptable level of energy consumption, and which days were not (energy consumption is too high).
+
+Explain the method chosen, and why it was chosen. If you made any assumptions, describe them also. You can supply graphs and other visual aids to help explain your solution. Provide all the code as well.
+
+For convenience, `data.csv` contains all data (both the train and the test data) and can be used if needed.
+
+##Attempt
+
+##### Part 1 (Relationship between energy and enthalpy)
+
+- We start by using keras API in tensorflow. At first glance this seems like we are tackling a non-linear regression problem (after having plotted the data).
+- We use the Sequential class to create a multilayer neural network. Here we use 2 hidden layers with 16 neurons (found by trial and error) and one output layer. 
+- We use elu activation functions that work better with our model (they are smoother than relu) and we used a linear activation function for our output layer.
+- We then set the optimizer to be Adam which is an algorithm that is stochastic gradient descent method (which is typical for these types of problems).
+- Finally we fit the model and obtain our predictions on the relation between energy and enthalpy that is plotted below and in 'fit.png'.
+![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/fit.png)
+
+-
