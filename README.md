@@ -7,6 +7,7 @@ Describe (with pseudocode or real code) how to find an element by value in an un
 > For simplicity, you can assume a list of integers.
 
 ##Attempt
+
 There are many ways to go about this question. Here is code in python for one of the possible ways: 
 1. Find it using the basic methods: 
 ex code: 
@@ -26,6 +27,7 @@ Here x should be an integer and List should be a list of integers.
 How would optimise the "find" function of Q1 if the input list is a sorted list?
 
 ##Attempt
+
 For a sorted array, one can use the Binary search algorithm which can be coded in python as follows: 
 ex code: 
 <<<
@@ -68,4 +70,12 @@ For convenience, `data.csv` contains all data (both the train and the test data)
 - Finally we fit the model and obtain our predictions on the relation between energy and enthalpy that is plotted below and in 'fit.png'.
 ![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/fit.png)
 
--
+##### Part 2 (Classification of test_data)
+
+There are a couple ways to approach this problem. We can train our data using unsupervised machine learning. Here I describe another approach that I took to solve this problem.
+-Using the data for the fit (predictions) from Part 1, we find the residuals of the data from the fit. 
+-Then we calculate the standard deviation of the residuals. This will let us generate some gaussian noise with the same standard deviation.
+-We apply the gaussian noise that was generated on our fit and retrieve the max and minimum values of the fit. 
+-We now see that all data points are well located between our max and min. (To be more precise in the future, we can divide our energy in a certain amount of parts (that seem to have a similar range of noise) and find the standard deviation of these parts of the residuals and apply it to the parts of the fit. This would help us to not overestimate the size that is acceptable). A figure is presented in 'range.png' and below.
+
+![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/range.png)
