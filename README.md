@@ -72,6 +72,7 @@ For convenience, `data.csv` contains all data (both the train and the test data)
 ##### Part 1 (Relationship between energy and enthalpy)
 
 - We start by using keras API in tensorflow. At first glance this seems like we are tackling a non-linear regression problem (after having plotted the data).
+- The data that was used for this part was from a training data set that had all acceptable values (no values are rejected). 
 - We use the Sequential class to create a multilayer neural network. Here we use 2 hidden layers with 16 neurons (found by trial and error) and one output layer. 
 - We use elu activation functions that work better with our model (they are smoother than relu) and we used a linear activation function for our output layer.
 - We then set the optimizer to be Adam which is an algorithm that is stochastic gradient descent method (which is typical for these types of problems).
@@ -91,9 +92,15 @@ There are a couple ways to approach this problem. We can train our data using un
 
 This allows us to set boundaries as to what is an acceptable energy level range for a given enthalpy value. Using our training (good data) we know that anything above or below that range is considered as unacceptable data. If we had training data that contained some bad data as well, we could have used a machine learning algorithm to train the data to recognize what is good and bad and set its own boundaries. (Classification problem).
 
-- We then proceed to find all the dates when the energy values were within the defined range as shown in figure 'test_data.png' and below. 
+- We now take our prediction model from Part 1 and apply it on the enthalpy test_data given by 'test_data.csv'.
+- We then proceed to find all the dates when the energy values were within the defined range as shown in figure 'test_data.png' and below. The range was defined from the gaussian noise generated with standard deviation that we retrieved in our training set. 
 
 ![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/test_data.png)
+
+Figure 'good.png' shows the data that is between both the min and max of our fit and is shown below.
+
+
+
 
 The code for this procedure is found in 'Q3.py' and below. 
 
@@ -243,6 +250,13 @@ if __name__=='__main__':
     good_dates=test_date[good]
     bad_dates=test_date[np.invert(good)]
     
+    #plotting data from within range only
+    plt.figure()
+    plt.plot(test_enthalpy,test_predictions+noise_max,label='Max prediction range')
+    plt.plot(test_enthalpy,test_predictions+noise_min,label='Min prediction range')
+    plt.plot(test_enthalpy[good],test_energy[good],'o',label='raw data')
+    plt.legend()
+    plt.savefig('good.png')
     
     #RESCALING 
     predictions_scaled=predictions*energy_scale.reshape(-1,1)
