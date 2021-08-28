@@ -73,9 +73,16 @@ For convenience, `data.csv` contains all data (both the train and the test data)
 ##### Part 2 (Classification of test_data)
 
 There are a couple ways to approach this problem. We can train our data using unsupervised machine learning. Here I describe another approach that I took to solve this problem.
--Using the data for the fit (predictions) from Part 1, we find the residuals of the data from the fit. 
--Then we calculate the standard deviation of the residuals. This will let us generate some gaussian noise with the same standard deviation.
--We apply the gaussian noise that was generated on our fit and retrieve the max and minimum values of the fit. 
--We now see that all data points are well located between our max and min. (To be more precise in the future, we can divide our energy in a certain amount of parts (that seem to have a similar range of noise) and find the standard deviation of these parts of the residuals and apply it to the parts of the fit. This would help us to not overestimate the size that is acceptable). A figure is presented in 'range.png' and below.
+
+- Using the data for the fit (predictions) from Part 1, we find the residuals of the data from the fit. 
+- Then we calculate the standard deviation of the residuals. This will let us generate some gaussian noise with the same standard deviation.
+- We apply the gaussian noise that was generated on our fit and retrieve the max and minimum values of the fit. 
+- We now see that all data points are well located between our max and min. (To be more precise in the future, we can divide our energy in a certain amount of parts (that seem to have a similar range of noise) and find the standard deviation of these parts of the residuals and apply it to the parts of the fit. This would help us to not overestimate the size that is acceptable). A figure is presented in 'range.png' and below.
 
 ![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/range.png)
+
+This allows us to set boundaries as to what is an acceptable energy level range for a given enthalpy value. Using our training (good data) we know that anything above or below that range is considered as unacceptable data. If we had training data that contained some bad data as well, we could have used a machine learning algorithm to train the data to recognize what is good and bad and set its own boundaries. (Classification problem).
+
+- We then proceed to find all the dates when the energy values were within the defined range as shown in figure 'test_data.png' and below. 
+
+![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/test_data.png)
