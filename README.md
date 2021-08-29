@@ -91,6 +91,8 @@ There are a couple ways to approach this problem. We can train our data using un
 
 ![alt text](https://github.com/alexandrekhoury/Challenge/blob/main/range.png)
 
+Here we find that the noise has a range of  <img src="https://render.githubusercontent.com/render/math?math=\pm 3 \sigma"> deviation from the best fit.
+
 This allows us to set boundaries as to what is an acceptable energy level range for a given enthalpy value. Using our training (good data) we know that anything above or below that range is considered as unacceptable data. If we had training data that contained some bad data as well, we could have used a machine learning algorithm to train the data to recognize what is good and bad and set its own boundaries. (Classification problem).
 
 - We now take our prediction model from Part 1 and apply it on the test_data given by 'test_data.csv' to recover new predictions for the given enthalpy.
