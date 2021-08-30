@@ -106,10 +106,14 @@ def merge_ranges(date_list):
 
 if __name__=='__main__':
        
+    #for my own practice with different values
+    #I only require that the first input of DateRange be smaller than the second input in general
     date_list=[DateRange(2,5),DateRange(1,3),DateRange(6,8),DateRange(7,14),DateRange(15,57)]
-        
     new_date_list=merge_ranges(date_list)
     
+    #feel free to modify the values of these dates to test all possibilities
+    #for these truth values we make the same assumptions as shown in the question i.e. :
+    #date1<date2<date3<date4<date5<date6
     date1=1
     date2=2
     date3=3
