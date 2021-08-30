@@ -6,7 +6,7 @@
 Describe (with pseudocode or real code) how to find an element by value in an unsorted list (i.e. define the "find" function for a list, with a list and a value as inputs). The function should return the index of the element found. What should you return if the element is not in the list?
 > For simplicity, you can assume a list of integers.
 
-##Attempt
+## Attempt
 
 There are many ways to go about this question. Here is code in python for one of the possible ways: 
 1. Find it using the basic methods: 
@@ -30,7 +30,7 @@ Here x should be an integer and List should be a list of integers.
 #### Q2. Optimised find function for sorted list
 How would optimise the "find" function of Q1 if the input list is a sorted list?
 
-##Attempt
+## Attempt
 
 For a sorted array, one can use the Binary search algorithm which can be coded in python as follows: 
 ex code: 
@@ -56,6 +56,8 @@ print(find_sorted(72,List))
 
 Here we have an implementation of the Binary search algorithm that takes the middle value of a list and sees if our target value is greater of less than our middle value and repeatedly iterates until the value index is found.
 
+## The code for Q1 and Q2 can be found in 'Q1.py'.
+
 #### Q3. Machine learning for energy consumption
 The `train_data.csv` contains energy consumption data of some store for some given days in the past where the store was working at an acceptable level of energy consumption (every day in the train_data can be considered good data, i.e. the store was working at an acceptable level).
 
@@ -67,7 +69,7 @@ Explain the method chosen, and why it was chosen. If you made any assumptions, d
 
 For convenience, `data.csv` contains all data (both the train and the test data) and can be used if needed.
 
-##Attempt
+## Attempt
 
 ##### Part 1 (Relationship between energy and enthalpy)
 
@@ -107,167 +109,32 @@ Figure 'good.png' shows the data that is between both the min and max of our fit
 
 #### On the plots we see that the energy and enthalpy values were renormalized. This was done in order to facilitate the machine learning algorithm. We can easily convert them back to their initial values since we kept track of the scaling transformation that was applied.
 
-The code for this procedure is found in 'Q3.py' and below. 
-
-```ruby
-import numpy as np
-from numpy import loadtxt
-import matplotlib.pyplot as plt
-import numpy as np
-import tensorflow as tf
+## The code for this procedure is found in 'Q3.py'.
 
 
-def load_data(filename):
-    with open(filename) as f:
-        #skipping lines that are comments
-        lines = (line for line in f if not line.startswith('#'))
-        #unpacking energy and enthalpy values 
-        energy,enthalpy = np.loadtxt(
-            lines,
-            dtype='float,float',
-            delimiter=',',
-            skiprows=1, #skip first line with header
-            usecols=(1,2),
-            unpack=True
-            )
-        #unpacking the date values as strings
-        date = np.loadtxt(filename,
-                          delimiter=',',
-                          dtype='str',
-                          skiprows=1,
-        
-                          usecols=(0))
-    return energy,enthalpy,date
+#### Bonus Question: Produce the merge_ranges function.
 
-def scaling(variable):
-    scale=variable/((variable-variable.min())/(variable.max()-variable.min()))
-    variable=((variable-variable.min())/(variable.max()-variable.min()))
-    return scale, variable
+Produce, in the language of your choice (Python strongly suggested), the `merge_ranges` function.
 
-def model(energy,enthalpy):
-    model=tf.keras.Sequential(
-    [
-     tf.keras.layers.Dense(16,
-                           input_dim=1,
-                           activation='elu'),
-     tf.keras.layers.Dense(16,activation='elu'),
-     tf.keras.layers.Dense(1)
-     ])
+> This challenge is to produce the code to merge multiple ranges of values if the ranges intersect.
 
-    optimizer= tf.keras.optimizers.Adam(learning_rate = 1e-3)
-    
-    model.compile(optimizer=optimizer,
-                  loss='mean_squared_error',
-                  metrics=['mse']
-                  )
-    
-    model.fit(
-        x=enthalpy, y=energy, batch_size=5, epochs=50
-        )
-    
-    predictions = model.predict(enthalpy)
-        
-    return predictions,model
+> The function should take a list of `DateRange`, and produces another list of `DateRange` which is the minimum representation of the input.
 
-def find_noise(std,size):
-    noise = np.random.normal(0,std,size)
-    noise_max=noise.max()
-    noise_min=noise.min()
-    return noise,noise_max,noise_min
+> A `DateRange` object is simply an object with a `start`, an `end`, with `start <= end`, where `start` and `end` are `date` objects. You can implement this object however you feel is most appropriate for the task.
 
-if __name__=='__main__':
-       
-    #unpacking the data and scaling
-    train_data='train_data.csv'
-    energy_raw,enthalpy_raw,date=load_data(train_data)
-    energy_scale,energy=scaling(energy_raw)
-    enthalpy_scale,enthalpy=scaling(enthalpy_raw)   
+Example:
+Assume `date1 < date2 < date3 < date4 < date5 < date6`, then
 
-    #plotting data
-    plt.figure()
-    plt.plot(enthalpy,energy,'o',label='raw data')
-    plt.xlabel("Renormalized enthalpy")
-    plt.ylabel("Renormalized energy")
-    
-    #reshaping for machine learning algorithm
-    energy=energy.reshape(-1,1)
-    enthalpy=enthalpy.reshape(-1,1)
-    
-    #finding best model using machine learning algorithm (linear regression means squared error)
-    predictions,model=model(energy,enthalpy)
-    
++ `merge_ranges([DateRange(date1, date3), DateRange(date2, date4)]) == [DateRange(date1, date4)]`
 
-    #plotting fit
-    plt.plot(enthalpy,predictions,'o',label='trained fit')
-    plt.xlabel("Renormalized enthalpy")
-    plt.ylabel("Predictions")
-    plt.legend()
-    plt.savefig('fit.png')
++ `merge_ranges([DateRange(date1, date3), DateRange(date2, date5), DateRange(date4, date6)]) == [DateRange(date1, date6)]`
 
++ `merge_ranges([DateRange(date1, date2), DateRange(date3, date5), DateRange(date4, date6)]) == [DateRange(date1, date2), DateRange(date3, date6)]`
 
-    #adding our gaussian noise to our fit
-    residuals=energy-predictions
-    std=np.std(residuals)
-    noise,noise_max,noise_min=find_noise(std,len(predictions))
-        
-    #plotting fit with noise
-    plt.figure()
-    plt.plot(enthalpy,predictions+noise_max,label='Max prediction range')
-    plt.plot(enthalpy,predictions+noise_min,label='Min prediction range')
-    plt.plot(enthalpy,energy,'o',label='raw data')
-    plt.xlabel("Renormalized enthalpy")
-    plt.ylabel("Predictions")
-    plt.legend()
-    plt.savefig('range.png')
-    
-    #=================================
-    #repeating steps for the test data
-    #=================================
-    
-    #unpacking data and scaling
-    test_data='test_data.csv'
-    test_energy_raw,test_enthalpy_raw,test_date=load_data(test_data)
-    test_energy_scale,test_energy=scaling(test_energy_raw)
-    test_enthalpy_scale,test_enthalpy=scaling(test_enthalpy_raw)   
-     
-    #reshape array for machine learning algorithm
-    test_energy=test_energy.reshape(-1,1)
-    test_enthalpy=test_enthalpy.reshape(-1,1)
-    
-    #applying algorithm and finding the noise using same standard deviation as in our trained data
-    test_predictions=model.predict(test_enthalpy)
-    test_noise,test_noise_max,test_noise_min=find_noise(std,len(test_predictions))
-    
-    #plotting test_data
-    plt.figure()
-    plt.plot(test_enthalpy,test_predictions+noise_max,label='Max prediction range')
-    plt.plot(test_enthalpy,test_predictions+noise_min,label='Min prediction range')
-    plt.plot(test_enthalpy,test_energy,'o',label='raw data')
-    plt.legend()
-    plt.savefig('test_data.png')
-    
-    #want our values to be between min and max of noise
-    logic1=test_energy<(test_predictions+test_noise_max) 
-    logic2=test_energy>(test_predictions+test_noise_min)
-    good=np.ravel(logic1*logic2)
-    
-    #finding the dates were data is acceptable
-    good_dates=test_date[good]
-    bad_dates=test_date[np.invert(good)]
-    
-    #plotting data from within range only
-    plt.figure()
-    plt.plot(test_enthalpy,test_predictions+noise_max,label='Max prediction range')
-    plt.plot(test_enthalpy,test_predictions+noise_min,label='Min prediction range')
-    plt.plot(test_enthalpy[good],test_energy[good],'o',label='raw data')
-    plt.legend()
-    plt.savefig('good.png')
-    
-    #RESCALING 
-    predictions_scaled=predictions*energy_scale.reshape(-1,1)
-    test_predictions=test_predictions*test_energy_scale.reshape(-1,1)
-    
-    
-    print("Days that had an acceptable level of energy consumption are:"+str(good_dates))
-    print("Days that had an unacceptable level of energy consumption are:"+str(bad_dates))
-```
+## Attempt
+
+In my attempt I make the assumption that the first value entered in DateRange is smaller than the second value. (ex: for DateRange(a,b), a should be smaller than b) . 
+I also make the assumption that dates are integers. If I had more time, I would code a function that turns the dates from strings to integers and then perform my analysis with the integers. 
+
+## The code can be found in 'bonus.py'.
+
